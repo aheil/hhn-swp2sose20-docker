@@ -1,0 +1,35 @@
+---
+version: '3'
+services:
+  mqtt:
+    image: eclipse-mosquitto:latest
+    restart: always
+    ports:
+      - "1883:1883" # MQTT Topic
+      - "9001:9001" # HTTP/Websocket
+  influxdb:
+    image: influxdb:latest
+    restart: always
+    ports:
+      - "8086:8086" # HTTP API
+      - "2003:2003" # Graphite Support
+    volumes:
+      - ./influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - data:/var/lib/influxdb
+  telegraf:
+    image: telegraf:latest
+    restart: always
+    ports:
+      - "8125:8125" # StatsD
+      - "8092:8092" # UDP
+      - "8094:8094" # TCP
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      type: none
+      o: binding
+      device: /influxdb_data
+  
