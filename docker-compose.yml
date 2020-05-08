@@ -1,5 +1,5 @@
 ---
-version: '3'
+version: '3.0'
 services:
   mqtt:
     image: eclipse-mosquitto:latest
@@ -25,11 +25,22 @@ services:
       - "8094:8094" # TCP
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+  grafana:
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - gdata:/var/lib/grafana
+
 volumes:
   data:
-    driver: local
-    driver_opts:
-      type: none
-      o: binding
-      device: /influxdb_data
+#    driver: local
+#    driver_opts:
+#      type: none
+#      o: bind
+#      device: /influxdata
+  gdata:
+
+
   
