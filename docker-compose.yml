@@ -15,7 +15,8 @@ services:
       - "2003:2003" # Graphite Support
     volumes:
       - ./influxdb.conf:/etc/influxdb/influxdb.conf:ro
-      - data:/var/lib/influxdb
+#      - data:/var/lib/influxdb
+      - ./influxdata:/var/lib/influxdb
   telegraf:
     image: telegraf:latest
     restart: always
@@ -34,12 +35,7 @@ services:
       - gdata:/var/lib/grafana
 
 volumes:
-  data:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: /influxdata
+#  data:
   gdata:
 
 
